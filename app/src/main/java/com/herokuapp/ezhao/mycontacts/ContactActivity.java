@@ -2,8 +2,12 @@ package com.herokuapp.ezhao.mycontacts;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.util.ArrayList;
 
 
 public class ContactActivity extends Activity {
@@ -12,6 +16,27 @@ public class ContactActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        layoutManager.scrollToPosition(0);
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(layoutManager);
+
+        ArrayList<ContactInfo> contacts = new ArrayList<>();
+        contacts.add(new ContactInfo("Name of Person", "email@gmail.com"));
+        contacts.add(new ContactInfo("Name of Person", "email@gmail.com"));
+        contacts.add(new ContactInfo("Name of Person", "email@gmail.com"));
+        contacts.add(new ContactInfo("Name of Person", "email@gmail.com"));
+        contacts.add(new ContactInfo("Name of Person", "email@gmail.com"));
+        contacts.add(new ContactInfo("Name of Person", "email@gmail.com"));
+        contacts.add(new ContactInfo("Name of Person", "email@gmail.com"));
+        contacts.add(new ContactInfo("Name of Person", "email@gmail.com"));
+        contacts.add(new ContactInfo("Name of Person", "email@gmail.com"));
+
+        ContactRecyclerAdapter adapter = new ContactRecyclerAdapter(contacts);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
