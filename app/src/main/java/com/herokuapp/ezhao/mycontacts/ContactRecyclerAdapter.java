@@ -1,18 +1,22 @@
 package com.herokuapp.ezhao.mycontacts;
 
+import android.database.Cursor;
+import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.List;
-
 public class ContactRecyclerAdapter extends RecyclerView.Adapter<ContactRecyclerAdapter.ViewHolder> {
-    private List<ContactInfo> contactList;
+    private Cursor cursor;
 
-    public ContactRecyclerAdapter(List<ContactInfo> contactList) {
-        this.contactList = contactList;
+    public ContactRecyclerAdapter() {
+    }
+
+    public void setCursor(Cursor cursor) {
+        this.cursor = cursor;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -24,14 +28,22 @@ public class ContactRecyclerAdapter extends RecyclerView.Adapter<ContactRecycler
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        ContactInfo contactInfo = contactList.get(i);
-        viewHolder.tvName.setText(contactInfo.name);
-        viewHolder.tvEmail.setText(contactInfo.email);
+        if (cursor != null) {
+            cursor.moveToPosition(i);
+            String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+            viewHolder.tvName.setText(name);
+
+            String email = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS));
+            viewHolder.tvEmail.setText(email);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return contactList.size();
+        if (cursor != null) {
+            return cursor.getCount();
+        }
+        return 0;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
